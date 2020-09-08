@@ -1,0 +1,24 @@
+<package format="2">
+  <name>drone</name>
+  <version>2.0.1</version>
+  <description>
+    A drone.
+  </description>
+  <author>Andy Blight</author>
+  <maintainer email="a.j.blight@leeds.ac.uk">Andy Blight</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>px4_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

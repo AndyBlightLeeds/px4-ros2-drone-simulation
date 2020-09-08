@@ -1,0 +1,14 @@
+#!/bin/bash
+# Parameters file.
+set -e
+
+. ../project_vars.bash
+
+ROOTFS=/tmp/px4
+VEHICLE_ID=0
+VEHICLE_NAME=iris_${VEHICLE_ID}
+ODOM_PARAMS=/tmp/px4/odom.yaml
+MICRO_RTPS_RECEIVE_PORT=2019
+MICRO_RTPS_SEND_PORT=2020
+ROS2_SERIAL_RECEIVE_PORT=2021
+ROS2_SERIAL_SEND_PORT=2022

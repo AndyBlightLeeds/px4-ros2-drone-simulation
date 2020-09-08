@@ -7,6 +7,9 @@ This repo allows the user to set up, build and run a simulation using:
 the Iris drone.
 * The Iris drone is simulated using Gazebo.
 
+The intention is to eventually control multiple drones simulataneously but
+getting one drone to fly is the first step.
+
 The versions of software used are:
 
 * Ubuntu 18.04LTS.
@@ -42,10 +45,10 @@ Gazebo (useful but I couldn't run the tests).
 
 ## TODO
 
-Copy over necessary parts from main project.
 Fix paths to repos.
 Check the install and build in a docker image to ensure that everything needed
 is in the scripts.
+Verify functionality.
 
 ### Docker
 
