@@ -25,6 +25,10 @@ everything breaks.
 When working on your own, I find that writing down the problem also helps to
 clarify what you are working on and what you have tried already.
 
+In case you are wondering what `AJB` stands for, they are my initials and are
+also a fairly unique string.  I use this for all temporary logging statements
+so I can easily find out where I've been working and tidy up afterwards.
+
 ### Missing a connection between my drone app and the MicroRTPS client
 
 Add a listener to the drone class for some messages from the MicroRTPS client.

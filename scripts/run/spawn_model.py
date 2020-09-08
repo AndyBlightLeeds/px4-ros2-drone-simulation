@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
-""" Based on launch_dron_ros2.py and
+"""
+Copyright 2020 University of Leeds.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Based on https://github.com/osrf/drone_demo launch_drone_ros2.py and
 https://answers.ros.org/question/314607/spawn-model-with-ros2-gazebo/
 """
 import math
@@ -25,7 +40,7 @@ def spawn_model(
 ):
     x, y, yaw = pose
     INITIAL_HEIGHT = 0.1  # m
-    node.get_logger().info("AJB: spawn_model")
+    node.get_logger().info("spawn_model called")
     client = node.create_client(SpawnEntity, service_name)
 
     while not client.wait_for_service(timeout_sec=1.0):
@@ -72,7 +87,7 @@ def main():
         xml = sdf_file.read()
     # Finally spawn the model.
     spawn_model(node, vehicle_name, xml, pose)
-    print("AJB: model ", vehicle_name, "spawned.")
+    print("model ", vehicle_name, "spawned.")
 
 
 if __name__ == "__main__":
