@@ -12,7 +12,13 @@ ENV LC_ALL C.UTF-8
 # Copy scripts directory into container.
 COPY ./scripts /scripts
 
+# Create user with UID and GID matching those on my PC.
+# This allows the user to delete build products created in the source tree.
+RUN groupadd -g 1000 build && useradd -u 1000 -g 1000 -m -s /bin/bash build
+
 # Installation is done as root.
+# Set git directory to user build's home directory.
+ENV USER_DIR /home/build
 # Run one script at a time to allow the image to be built in layers.
 RUN cd /scripts/install && bash -x ./install_ros2_gazebo11.bash
 RUN cd /scripts/install && bash -x ./install_fast_rtps.bash
@@ -20,11 +26,5 @@ RUN cd /scripts/install && bash -x ./install_px4_repos.bash
 RUN cd /scripts/install && bash -x ./install_drone_packages.bash
 
 # Build is done as user.
-# Set user to Ubuntu first user.  This allows the user to delete build products
-# created in the source tree.
-RUN groupadd --gid 1000 build
-RUN useradd --uid 1000 -m -s /bin/bash build
 USER build
-RUN whoami && echo "HOME = $HOME"
-
 # RUN cd /scripts/build && ./build_all.bash

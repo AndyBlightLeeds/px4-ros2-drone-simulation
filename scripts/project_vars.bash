@@ -1,12 +1,14 @@
 # Source this file in other shell scripts.
 
 UBUNTU_RELEASE=bionic
+# Set user directory (mainly for docker)
+USER_DIR=${USER_DIR:-${HOME}}
 # Export colcon workspace directories.
-PROJECT_DIR=${HOME}
+PROJECT_DIR=${USER_DIR}
 COLCON_WS_DIR=${PROJECT_DIR}/px4_drone_simulation_ws
 COLCON_SRC_DIR=${COLCON_WS_DIR}/src
 # Export git and source directories.
-GIT_DIR=${HOME}/git
+GIT_DIR=${USER_DIR}/git
 PX4_GIT_DIR=${GIT_DIR}/andyblightleeds
 PX4_GITHUB_URL=https://github.com/andyblightleeds
 PX4_FIRMWARE_GIT_DIR=${PX4_GIT_DIR}/px4_firmware
