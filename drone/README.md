@@ -7,7 +7,7 @@ This package implements the code required to fly a drone simulated in Gazebo.
 First, follow the
 install, build and run instructions in the `scripts/readme.md` file.
 
-Starting the drone can be done manually as follows:
+Starting the drone can be done as follows:
 
 ```text
 cd ~/drones_ws/
@@ -23,7 +23,8 @@ capturing.  They are often useful when you update a package or two and
 everything breaks.
 
 When working on your own, I find that writing down the problem also helps to
-clarify what you are working on and what you have tried already.
+clarify what you are working on and you can look back over what you have
+already tried.
 
 In case you are wondering what `AJB` stands for, they are my initials and are
 also a fairly unique string.  I use this for all temporary logging statements

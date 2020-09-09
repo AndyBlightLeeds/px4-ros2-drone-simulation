@@ -15,7 +15,7 @@ fi
 if [ ! -e /etc/apt/sources.list.d/gazebo-stable.list ]
 then
     # Install the key.
-    wget  http://packages.osrfoundation.org/gazebo.key
+    wget http://packages.osrfoundation.org/gazebo.key
     sudo apt-key add gazebo.key
     # setup sources.list
     command="echo \"deb [arch=amd64] http://packages.osrfoundation.org/gazebo/ubuntu-stable "
@@ -25,8 +25,8 @@ then
 fi
 
 # Install ROS2 Gazebo11 packages
-sudo apt update
-sudo apt install -y \
+sudo apt-get update
+sudo apt-get -y --no-install-recommends install \
     ros-${ROS2_DISTRO}-gazebo11-dev \
     ros-${ROS2_DISTRO}-gazebo11-msgs \
     ros-${ROS2_DISTRO}-gazebo11-plugins \

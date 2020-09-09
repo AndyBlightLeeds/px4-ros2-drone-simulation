@@ -4,9 +4,6 @@ set -e
 
 . ./vars.bash
 
-mkdir -p context
-cd context
-cp -rf ../../scripts .
-docker build -t ${CONTAINER_NAME}:${CONTAINER_VERSION}
-# cd ..
-# rm -rf context
+cp -rf ../scripts .
+docker build -t ${CONTAINER_NAME}:${CONTAINER_VERSION} .
+# rm -rf scripts

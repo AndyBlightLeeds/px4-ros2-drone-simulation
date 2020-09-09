@@ -7,7 +7,13 @@ set -e
 . ../project_vars.bash
 . /opt/ros/${ROS2_DISTRO}/setup.bash
 
-sudo apt install -y libasio-dev libtinyxml2-dev gradle
+sudo apt-get update
+sudo apt-get -y --no-install-recommends install \
+    build-essential \
+    git \
+    libasio-dev \
+    libtinyxml2-dev \
+    gradle
 
 FAST_RTPS_VERSION=1.9.2
 FAST_RTPS_BRANCH=1.9.x

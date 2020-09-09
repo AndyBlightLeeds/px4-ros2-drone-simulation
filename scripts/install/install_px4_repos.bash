@@ -5,8 +5,11 @@ set -ex
 . ../project_vars.bash
 
 # Install packages for Firmware and px4_ros_com
-sudo apt update
-sudo apt -y --no-install-recommends install \
+sudo apt-get update
+sudo apt-get -y --no-install-recommends install \
+    build-essential \
+    git \
+    python3-pip \
     python3-colcon-common-extensions \
     ros-${ROS2_DISTRO}-eigen3-cmake-module \
     ros-${ROS2_DISTRO}-mavlink \
@@ -15,8 +18,11 @@ sudo apt -y --no-install-recommends install \
     gstreamer1.0-plugins-bad \
     gstreamer1.0-plugins-ugly
 
-sudo -H pip3 install setuptools toml pyros-genmsg packaging
-
+sudo -H pip3 install \
+    setuptools \
+    toml \
+    pyros-genmsg \
+    packaging
 
 # PX4/Firmware
 if [ ! -e ${PX4_FIRMWARE_GIT_DIR} ]

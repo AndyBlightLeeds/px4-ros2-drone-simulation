@@ -53,7 +53,6 @@ Gazebo (useful but I couldn't run the tests).
 
 ## TODO
 
-Fix paths to repos.
 Check the install and build in a docker image to ensure that everything needed
 is in the scripts.
 Verify functionality.

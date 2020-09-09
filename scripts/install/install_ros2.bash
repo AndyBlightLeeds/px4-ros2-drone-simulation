@@ -15,8 +15,8 @@ then
     sudo sh -c "${command}"
 fi
 
-sudo apt update
-sudo apt install -y --no-install-recommends \
+sudo apt-get update
+sudo apt-get install -y --no-install-recommends \
     python3-argcomplete \
     python3-colcon-common-extensions \
     python3-colcon-mixin \
