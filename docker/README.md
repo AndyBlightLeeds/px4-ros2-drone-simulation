@@ -16,5 +16,13 @@ and leaves it running until `stop.bash` is called.
 Once the container is started, you can get a bash user prompt using
 `connect.bash`.
 
-NOTES:
-The code repo is outside the docker and is mounted on to `/home/user/`.
+## NOTES
+
+1. The code repo is outside the docker and is mounted on to `/home/user/`.
+1. The docker build is done in two parts for speed reasons.
+   1. The first image built is ROS2 Eloquent desktop.  This build takes about
+   15 minutes even on a fast PC so it is worth spending the extra time getting
+   it built and out of the way.  This image can also be used for other
+   projects.
+   2. The second build uses the first image as a starting point and so takes
+   much less time to build.

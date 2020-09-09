@@ -1,6 +1,7 @@
 # Ubuntu 18.04LTS, Gazebo 11, PX4, ROS2 Simulation container.
 
-FROM ubuntu:18.04
+# Start with base ROS2 image.
+FROM ubuntu1804ros2eloquentdesktop:v1
 
 # Allow apt install to work properly.
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,33 +9,11 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-# Setup timezone (from https://github.com/osrf/docker_images/tree/0b33e61b5bbed5b93b9fba2d5bae5db604ff9b58)
-RUN echo 'Etc/UTC' > /etc/timezone && \
-    ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends tzdata && \
-    rm -rf /var/lib/apt/lists/*
-
 # Copy scripts directory into container.
 COPY ./scripts /scripts
 
-# Install sudo as needed by install scripts.
-# apt-utils make for neater apt installs.
-# gpg et al are needed for adding keys for ROS packages etc.
-# dirmngr is used by GPG.
-# curl is used to fetch time zone info.
-# wget is used to fetch apt keys.
-RUN apt-get update && apt-get -q -y --no-install-recommends install \
-    sudo \
-    apt-utils \
-    gnupg2 dirmngr \
-    curl \
-    wget
-
 # Installation is done as root.
 # Run one script at a time to allow the image to be built in layers.
-# ROS2 is massive!
-RUN cd /scripts/install && bash -x ./install_ros2.bash
 RUN cd /scripts/install && bash -x ./install_ros2_gazebo11.bash
 RUN cd /scripts/install && bash -x ./install_fast_rtps.bash
 RUN cd /scripts/install && bash -x ./install_px4_repos.bash
@@ -45,4 +24,3 @@ RUN cd /scripts/install && bash -x ./install_drone_packages.bash
 # created in the source tree.
 USER 1000:1000
 RUN cd /scripts/build && ./build_all.sh
-

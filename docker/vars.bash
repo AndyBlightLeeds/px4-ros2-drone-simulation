@@ -1,4 +1,6 @@
 # Variables for other scripts.
 
-CONTAINER_NAME="px4_ros2_simulation"
-CONTAINER_VERSION="v1"
+ROS2_DESKTOP_IMAGE="ubuntu1804ros2eloquentdesktop"
+ROS2_DESKTOP_TAG="v1"
+SIMULATION_IMAGE="px4_ros2_simulation"
+SIMULATION_TAG="v1"
