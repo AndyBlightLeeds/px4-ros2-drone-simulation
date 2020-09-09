@@ -30,7 +30,7 @@ then
     cd ${GIT_DIR}
     git clone --recursive \
         --branch ${DRONES_BRANCH} \
-        https://github.com/iDROAtLeeds/px4_firmware.git \
+        ${PX4_GITHUB_URL}/px4_firmware.git \
         ${PX4_FIRMWARE_GIT_DIR}
 fi
 
@@ -48,7 +48,7 @@ then
     git clone \
         --recursive \
         --branch ${DRONES_BRANCH} \
-        https://github.com/iDROAtLeeds/px4_sitl_gazebo.git \
+        ${PX4_GITHUB_URL}/px4_sitl_gazebo.git \
         ${PX4_SITL_GAZEBO_GIT_DIR}
 fi
 
@@ -64,7 +64,7 @@ then
     mkdir -p ${PX4_GIT_DIR}
     cd ${PX4_GIT_DIR}
     git clone --branch ${DRONES_BRANCH} \
-        https://github.com/iDROAtLeeds/px4_msgs.git \
+        ${PX4_GITHUB_URL}/px4_msgs.git \
         ${PX4_MSGS_GIT_DIR}
 fi
 
@@ -82,6 +82,6 @@ then
     cd ${COLCON_SRC_DIR}
     git clone \
         --branch ${DRONES_BRANCH} \
-		https://github.com/iDROAtLeeds/px4_ros_com.git \
+		${PX4_GITHUB_URL}/px4_ros_com.git \
         ${PX4_ROS_COM_DIR}
 fi

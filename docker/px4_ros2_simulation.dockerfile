@@ -22,5 +22,9 @@ RUN cd /scripts/install && bash -x ./install_drone_packages.bash
 # Build is done as user.
 # Set user to Ubuntu first user.  This allows the user to delete build products
 # created in the source tree.
-USER 1000:1000
-RUN cd /scripts/build && ./build_all.sh
+RUN groupadd --gid 1000 build
+RUN useradd --uid 1000 -m -s /bin/bash build
+USER build
+RUN whoami && echo "HOME = $HOME"
+
+# RUN cd /scripts/build && ./build_all.bash
