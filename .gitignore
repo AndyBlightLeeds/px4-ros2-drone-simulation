@@ -1,3 +1,4 @@
 **/.gradle/**
 **/.vscode/**
 **/log/**
+docker/context/**

@@ -10,6 +10,6 @@ set -e
 # Now build the rest.
 cd ${COLCON_WS_DIR}
 . /opt/ros/${ROS2_DISTRO}/setup.bash
-colcon build --merge-install --packages-select px4_msgs
+colcon build --merge-install
 
 echo "Build took $SECONDS seconds."

@@ -1,0 +1,22 @@
+# Ubuntu 18.04LTS, Gazebo 11, PX4, ROS2 Simulation container.
+
+FROM ubuntu:18.04
+
+# Allow apt install to work properly.
+ENV DEBIAN_FRONTEND noninteractive
+# Use computer locale to allow for improved scripting.
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+# Copy scripts directory into container.
+COPY ./scripts /scripts
+
+# Installation is done as root.
+RUN cd /scripts/install && ./install_all.bash
+
+# Build is done as user.
+# Set user to Ubuntu first user.  This allows the user to delete build products
+# created in the source tree.
+USER 1000:1000
+RUN cd /scripts/build && ./build_all.sh
+
