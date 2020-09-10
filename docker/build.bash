@@ -26,4 +26,6 @@ then
         .
     set +e
 fi
-# rm -rf scripts
+
+# Tidy up
+rm -rf scripts
