@@ -5,9 +5,8 @@ set -e
 . ./vars.bash
 
 # TODO USE realpath
-cd ..
 docker run -dt \
-    --name robot_env \
+    --name ${SIMULATION_CONTAINER_NAME} \
     --restart unless-stopped \
     -v `pwd`:/home/user \
-    ${CONTAINER_NAME}
+    ${SIMULATION_IMAGE}:${SIMULATION_TAG}

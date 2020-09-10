@@ -8,12 +8,13 @@ NOTE: running the simulation requires a graphics card with 4GB RAM or better.
 
 ## Basic operation
 
-The script `build.bash` builds the docker container.  Do this just once!
+The script `build.bash` creates the docker container, installing all packages
+as defined in the `scripts/install` directory.  Do this just once!
 
 To start the container, use `start.bash`.  This script starts the container
 and leaves it running until `stop.bash` is called.
 
-Once the container is started, you can get a bash user prompt using
+When the container is running, you can get a bash user prompt using
 `connect.bash`.
 
 ## NOTES

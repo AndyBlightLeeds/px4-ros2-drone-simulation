@@ -27,4 +27,3 @@ RUN cd /scripts/install && bash -x ./install_drone_packages.bash
 
 # Build is done as user.
 USER build
-# RUN cd /scripts/build && ./build_all.bash

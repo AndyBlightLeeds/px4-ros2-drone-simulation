@@ -1,6 +1,6 @@
 #!/bin/bash
 # Build the docker image.
-# set -e  # Not used as docker inspect can fail but we need to carry on.
+# Not using set -e as `docker inspect` can legitimately fail.
 
 . ./vars.bash
 
