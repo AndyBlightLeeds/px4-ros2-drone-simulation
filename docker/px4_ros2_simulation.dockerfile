@@ -25,5 +25,5 @@ RUN cd /scripts/install && bash -x ./install_fast_rtps.bash
 RUN cd /scripts/install && bash -x ./install_px4_repos.bash
 RUN cd /scripts/install && bash -x ./install_drone_packages.bash
 
-# Build is done as user.
-USER build
+# Change ownership of code repos and workspace to build:build
+RUN chown -R build:build /home/build/
