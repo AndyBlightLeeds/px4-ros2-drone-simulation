@@ -1,5 +1,5 @@
 #!/bin/bash
-# Start the docker image.
+# Start the docker container.
 # set -x
 
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"

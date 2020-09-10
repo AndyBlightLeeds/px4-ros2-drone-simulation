@@ -27,3 +27,7 @@ RUN cd /scripts/install && bash -x ./install_drone_packages.bash
 
 # Change ownership of code repos and workspace to build:build
 RUN chown -R build:build /home/build/
+
+# Change to user and build everything.
+USER build
+RUN cd /scripts/build && bash -x ./build_all.bash
