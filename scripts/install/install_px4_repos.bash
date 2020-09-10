@@ -22,7 +22,8 @@ sudo -H pip3 install \
     setuptools \
     toml \
     pyros-genmsg \
-    packaging
+    packaging \
+    jinja2
 
 # PX4/Firmware
 if [ ! -e ${PX4_FIRMWARE_GIT_DIR} ]
