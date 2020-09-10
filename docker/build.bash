@@ -2,6 +2,8 @@
 # Build the docker image.
 # Not using set -e as `docker inspect` can legitimately fail.
 
+scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd ${scripts_dir}
 . ./vars.bash
 
 cp -rf ../scripts .

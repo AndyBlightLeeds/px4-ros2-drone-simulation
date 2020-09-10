@@ -3,6 +3,6 @@
 # Only works for one container running.
 set -e
 
-. ./vars.bash
-
-docker exec -it ${SIMULATION_CONTAINER_NAME} /bin/bash
+scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
+. ${scripts_dir}/vars.bash
+docker exec -it -w /home/build ${SIMULATION_CONTAINER_NAME} /bin/bash

@@ -2,7 +2,8 @@
 # Stop the docker image.
 set -e
 
-. ./vars.bash
+scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
+. ${scripts_dir}/vars.bash
 
 if [ "$( docker container inspect -f '{{.State.Status}}' ${SIMULATION_CONTAINER_NAME} )" == "running" ]
 then
