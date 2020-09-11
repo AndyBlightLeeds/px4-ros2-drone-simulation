@@ -29,5 +29,7 @@ then
     set +e
 fi
 
+echo "Build of simulation took $SECONDS seconds."
+
 # Tidy up
 rm -rf scripts

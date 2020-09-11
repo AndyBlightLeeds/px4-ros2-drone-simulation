@@ -19,9 +19,16 @@ and leaves it running until `stop.bash` is called.
 When the container is running, you can get a Bash user prompt using
 `connect.bash`.
 
-At the new Bash prompt,
+At the new Bash prompt, enter the following:
 
-TODO Add details about what to do...
+```text
+cd code/scripts/run/
+./auto_start.bash
+```
+
+At this point, you should be able to see the Gazebo client with an Iris drone
+on the ground.
+
 
 ## Set up NVidia
 
@@ -104,7 +111,24 @@ RViz should start up.
    projects.
    2. The second build uses the first image as a starting point. First, the
    various packages and code for the simulation are installed and then all the
-   code is built.  This takes another 10 minutes or so to complete.  It is a
+   code is built.  This takes another 15 minutes or so to complete.  It is a
    big build!
 
+## Troubleshooting
 
+### PX4 terminates when run in docker
+
+```text
+INFO  [mavlink] mode: Normal, data rate: 4000000 B/s on udp port 18570 remote port 14550
+INFO  [mavlink] mode: Onboard, data rate: 4000000 B/s on udp port 14580 remote port 14540
+INFO  [mavlink] mode: Onboard, data rate: 4000 B/s on udp port 14280 remote port 14030
+INFO  [logger] logger started (mode=all)
+INFO  [logger] Start file log (type: full)
+INFO  [logger] [logger] ./log/2020-09-11/14_32_36.ulg
+INFO  [logger] Opened full log file: ./log/2020-09-11/14_32_36.ulg
+INFO  [mavlink] MAVLink only on localhost (set param MAV_BROADCAST = 1 to enable network)
+INFO  [px4] Startup script returned successfully
+pxh> Exiting NOW.
+```
+
+This should not exit.
