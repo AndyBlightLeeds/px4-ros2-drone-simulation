@@ -17,6 +17,10 @@ set -e
 # The simplest thing to do to meet this requirement is to install
 # the package ros-eloquent-mavlink. See install_px4_repos.bash.
 
+# Make sure the sub-repos are up to date.
+cd ${PX4_SITL_GAZEBO_GIT_DIR}
+git submodule update --init --recursive
+
 # Build.
 cd ${COLCON_WS_DIR}
 . /opt/ros/${ROS2_DISTRO}/setup.bash

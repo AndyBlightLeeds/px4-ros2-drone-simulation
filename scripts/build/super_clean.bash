@@ -1,11 +1,11 @@
 #!/bin/bash
 # Clean the parts of the bulid needed to pick up changes to the uORB YAML file.
-set -ex
+set -e
 
 . ../project_vars.bash
 
 # Clean the firmware build.
-cd ${PX4_GIT_DIR}/Firmware
+cd ${PX4_FIRMWARE_GIT_DIR}
 git reset --hard
 git clean -dfx
 git submodule foreach "git reset --hard; git clean -dfx"
