@@ -1,6 +1,7 @@
 #!/bin/bash
 # Start up a single drone (iris 0).
-# konsole start up based on https://superuser.com/questions/682850/open-new-konsole-from-script-executing-command-and-becoming-interactive-on-conc
+# konsole start up based on
+# https://superuser.com/questions/682850/open-new-konsole-from-script-executing-command-and-becoming-interactive-on-conc
 set -e
 
 . ./params.bash

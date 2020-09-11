@@ -70,9 +70,12 @@ def main():
     vehicle_id = 0
     vehicle_name = drone_type + "_%s" % vehicle_id
     pose = (0.0, 0.0, 0.0)
+    # Create file name using environment variable PX4_SITL_GAZEBO_GIT_DIR made
+    # available by the calling Bash script.
+    firmware_dir = os.environ['PX4_SITL_GAZEBO_GIT_DIR']
+    sdf_file_name = firmware_dir + "/models/iris/iris.sdf"
     # Load XML from file.
     xml = ""
-    sdf_file_name = "/home/andy/git/drones/PX4/sitl_gazebo/models/iris/iris.sdf"
     with open(sdf_file_name, 'r') as sdf_file:
         xml = sdf_file.read()
     # Finally spawn the model.
