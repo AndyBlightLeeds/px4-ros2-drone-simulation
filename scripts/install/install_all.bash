@@ -1,14 +1,6 @@
 #!/bin/bash
 # Installs all repos and sets up workspace.
-
-set -ex
-
-# Setup timezone (from https://github.com/osrf/docker_images/tree/0b33e61b5bbed5b93b9fba2d5bae5db604ff9b58)
-sudo echo 'Etc/UTC' > /etc/timezone && \
-    ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends tzdata && \
-    rm -rf /var/lib/apt/lists/*
+set -e
 
 # Install pre-requesites.
 # apt-utils make for neater apt installs.
