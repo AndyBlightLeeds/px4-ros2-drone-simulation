@@ -9,12 +9,22 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
+# nvidia-container-runtime
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+
 # Copy scripts directory into container.
 COPY ./scripts /scripts
 
 # Create user with UID and GID matching those on my PC.
 # This allows the user to delete build products created in the source tree.
-RUN groupadd -g 1000 build && useradd -u 1000 -g 1000 -m -s /bin/bash build
+RUN groupadd -g 1000 build && \
+    useradd -u 1000 -g 1000 -m -s /bin/bash build && \
+    echo "build ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/build && \
+    chmod 0440 /etc/sudoers.d/build
+ENV HOME /home/build
 
 # Installation is done as root.
 # Set git directory to user build's home directory.

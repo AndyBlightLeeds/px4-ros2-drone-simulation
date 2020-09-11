@@ -1,5 +1,5 @@
 #!/bin/bash
-# Stop the docker image.
+# Stop the docker container.
 set -e
 
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
