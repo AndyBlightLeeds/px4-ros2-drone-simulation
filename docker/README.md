@@ -12,15 +12,18 @@ Docker support other graphics cards but I have no idea how to configure them!
 
 ## Basic operation
 
-The script `build.bash` creates the docker container, installing all packages
-as defined in the `scripts/install` directory.  Do this just once!
+The script `docker/build.bash` creates the docker container, installing all
+packages as defined in the `scripts/install` directory.  Do this just once!
+This process took about 30 minutes on my PC, so get on with something else
+while the image is built.
 
-To start the container, use `start.bash`.  This script starts the container
-and leaves it running until `stop.bash` is called.
+To start the container, use `docker/start.bash`.  This script starts the container
+and leaves it running until `docker/stop.bash` is called.
 
-When the container is running, you can get a Bash user prompt using
-`attach.bash`.
+When the container is running, you can get a Bash user prompt attached to the
+container using `docker/attach.bash`.
 
+To start the simulation, start the container and attach to the container.
 At the new Bash prompt, enter the following:
 
 ```text
