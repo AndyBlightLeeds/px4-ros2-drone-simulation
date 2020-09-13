@@ -81,6 +81,7 @@ Gazebo.  There are also countless uses of the following sites:
 * <https://dev.px4.io/v1.10/en/>
 * <https://discuss.px4.io/>
 
-## TODO
+## Status
 
-All done :-)
+* Drone::TestAutoModes works.
+* Drone::TestMission arms but does not take off. This uses a waypont mission but something is broken.
