@@ -20,4 +20,4 @@ cd ${ROOTFS}
 PX4_SIM_MODEL=iris \
 bin/px4 ${ROOTFS}/ROMFS/px4fmu_common \
     -s ${ROOTFS}/ROMFS/px4fmu_common/init.d-posix/rcS \
-    -i 0
+    -i 0 $1

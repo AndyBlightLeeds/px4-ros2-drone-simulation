@@ -5,30 +5,30 @@ set -e
 
 . ./params.bash
 
-# There is a `sleep 1` between each command to allow it time to finish.
-# This is needed as each process takes a while to get started.
+LOG_DIR=logs
+mkdir -p ${LOG_DIR}
+
+# Start the process with all output piped to a log file.
+function new_process {
+    echo "Starting $1"
+    ./$1.bash $2 &> ${LOG_DIR}/$1.log &
+    # Sleep to allow the process time to start up.
+    sleep 1
+}
 
 # Gazebo server and client.
-./gzserver.bash &> gzserver.log &
-sleep 1
-./gzclient.bash &> gzclient.log &
-sleep 1
+new_process gzserver
+new_process gzclient
 
-# Spawn the model. This terminates after being run.
-./spawn_model.bash &> spawn_model.log
+# Spawn the model.
+new_process spawn_model
 
-# Start PX4.
-# TODO It would be good to keep this session interactive as I have
-# found it useful to be able to run PX4 commands when debugging.
-./px4.bash &> px4.log &
-sleep 1
-# Start microRTPS client on PX4. This terminates after being run.
-./micrortps_client.bash &> gzserver.log &
-sleep 1
+# Start PX4 and uRTPS client.
+new_process px4 -d
+new_process micrortps_client
 
 # uRTPS agent.
-./micrortps_agent.bash &> gzserver.log &
-sleep 1
+new_process micrortps_agent
 
 echo "Done"
 

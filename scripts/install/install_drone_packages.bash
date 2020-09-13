@@ -9,4 +9,11 @@ set -e
 # Set up links to repos.
 mkdir -p ${COLCON_SRC_DIR}
 cd ${COLCON_SRC_DIR}
-ln -sf ${DRONE_GIT_DIR}
+
+# The drone repo is mounted on ~/code when inside a docker.
+if [ -f /.dockerenv ]
+then
+    ln -sf ~/code drone
+else
+    ln -sf ${DRONE_GIT_DIR}
+fi

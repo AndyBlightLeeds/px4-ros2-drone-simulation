@@ -28,7 +28,7 @@ The scripts are split into three directories, install, build and run.
 Running the Gazebo server and client on a PC requires a decent graphics card.
 The simplest way to judge if it is good enough is to state that you need a card
 with at least 4GB of RAM.  I tried an old 1GB card which did work but was
-painfully slow.  I then used a laptop with an NVidia M2000 4GB 'card' and it
+painfully slow.  I then used a laptop with an NVidia M2000 4GB card and it
 worked well.
 
 ## Installation

@@ -79,7 +79,7 @@ def main():
     with open(sdf_file_name, 'r') as sdf_file:
         xml = sdf_file.read()
     # Finally spawn the model.
-    spawn_model(node, vehicle_name, xml, pose)
+    spawn_model(node, vehicle_name, xml, pose, debug=False)
     print("model ", vehicle_name, "spawned.")
 
 

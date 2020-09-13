@@ -1,12 +1,14 @@
 # Docker
 
 This directory provides the user with a method to quickly build and test the
-drone code.  Scripts are provided to create the docker image and to start and
-stop the container.
+drone code in a docker container.  Scripts are provided to create the docker
+image and to start, stop and attach to the container.
 
-NOTE: running the simulation requires a graphics card with 4GB RAM or better.
+IMPORTANT NOTE: running the simulation requires a graphics card with
+4GB RAM or better.
 
 To set up your PC to use NVidia, please read the section `Set up NVidia`.
+Docker support other graphics cards but I have no idea how to configure them!
 
 ## Basic operation
 
@@ -17,7 +19,7 @@ To start the container, use `start.bash`.  This script starts the container
 and leaves it running until `stop.bash` is called.
 
 When the container is running, you can get a Bash user prompt using
-`connect.bash`.
+`attach.bash`.
 
 At the new Bash prompt, enter the following:
 
@@ -27,8 +29,39 @@ cd code/scripts/run/
 ```
 
 At this point, you should be able to see the Gazebo client with an Iris drone
-on the ground.
+on the ground.  Using `ps` on the shell should show something like this:
 
+```text
+$ ps x
+  PID TTY      STAT   TIME COMMAND
+    1 pts/0    Ss+    0:00 /bin/bash
+   10 pts/1    Ss     0:00 /bin/bash
+ 1166 pts/1    S      0:00 /bin/bash ./gzserver.bash
+ 1196 pts/1    Sl    14:34 gzserver --verbose --physics=ode --server-plugin libgazebo_ros_factory.so worlds/empty.world
+ 1240 pts/1    S      0:00 /bin/bash ./gzclient.bash
+ 1270 pts/1    Sl     9:16 gzclient --verbose
+ 1344 pts/1    S      0:00 /bin/bash ./auto_start.bash
+ 1378 pts/1    Sl     4:10 bin/px4 /tmp/px4/ROMFS/px4fmu_common -s /tmp/px4/ROMFS/px4fmu_common/init.d-posix/rcS -i 0 -d
+ 1634 pts/1    S      0:00 /bin/bash ./micrortps_agent.bash
+ 1636 pts/1    Sl    20:04 build/px4_ros_com/micrortps_agent -t UDP -r 2020 -s 2019
+ 1899 pts/2    Ss+    0:00 /bin/bash
+ 2299 pts/1    R+     0:00 ps x
+
+```
+
+This shows that there are four processes running: Gazebo server and client,
+one instance of PX4 and the MicroRTPS agent.  These four process are the
+minimum needed to run the drone test software.
+
+To start the drone test software, run the following commands:
+
+```text
+cd ~/px4_drone_simulation_ws/
+. ./install/setup.bash
+./build/drone/drone
+```
+
+You should see the drone execute the test missions defined in `drone.cpp`.
 
 ## Set up NVidia
 
@@ -50,6 +83,13 @@ Then test using:
 
 ```bash
 docker run --gpus all nvidia/cuda:9.0-base nvidia-smi
+```
+
+NOTE: You may need to use another version of CUDA. 9.0 worked for me but 11.0
+is the current version, e.g.
+
+```bash
+docker run --gpus all nvidia/cuda:11.0-base nvidia-smi
 ```
 
 When the docker has been downloaded and installed, you should see something
@@ -74,15 +114,12 @@ Fri Sep 11 09:18:06 2020
 +-----------------------------------------------------------------------------+
 ```
 
-NOTE: You may need to use another version of CUDA. 9.0 worked for me but 11.0
-is the current version.
-
 ### Running the ros_melodic_nvdia docker image
 
 This is a bare bones version of the info in section 1.3 here:
 <http://wiki.ros.org/docker/Tutorials/Hardware%20Acceleration>
 
-I have included it in this repo as is a quick way to verify that you have
+I have included it in this repo as a quick way to verify that you have
 everything setup correctly on your PC to run the main docker image.
 
 Run the following commands:
@@ -103,32 +140,13 @@ RViz should start up.
 
 ## NOTES
 
-1. The code repo is outside the docker and is mounted on to `/home/build/`.
-1. The docker build is done in two parts for speed reasons.
+1. The code repo is outside the docker and is mounted on to `/home/build/code`.
+1. The docker build is done in two parts.
    1. The first image built is ROS2 Eloquent desktop.  This build takes about
    15 minutes even on a fast PC so it is worth spending the extra time getting
    it built and out of the way.  This image can also be used for other
    projects.
-   2. The second build uses the first image as a starting point. First, the
+   1. The second build uses the first image as a starting point. First, the
    various packages and code for the simulation are installed and then all the
    code is built.  This takes another 15 minutes or so to complete.  It is a
    big build!
-
-## Troubleshooting
-
-### PX4 terminates when run in docker
-
-```text
-INFO  [mavlink] mode: Normal, data rate: 4000000 B/s on udp port 18570 remote port 14550
-INFO  [mavlink] mode: Onboard, data rate: 4000000 B/s on udp port 14580 remote port 14540
-INFO  [mavlink] mode: Onboard, data rate: 4000 B/s on udp port 14280 remote port 14030
-INFO  [logger] logger started (mode=all)
-INFO  [logger] Start file log (type: full)
-INFO  [logger] [logger] ./log/2020-09-11/14_32_36.ulg
-INFO  [logger] Opened full log file: ./log/2020-09-11/14_32_36.ulg
-INFO  [mavlink] MAVLink only on localhost (set param MAV_BROADCAST = 1 to enable network)
-INFO  [px4] Startup script returned successfully
-pxh> Exiting NOW.
-```
-
-This should not exit.

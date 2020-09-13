@@ -21,7 +21,7 @@ then
     fi
 else
     # Container does not exist.
-    # Setup X window for the contianer to use.
+    # Setup X window for the container to use.
     XAUTH=/tmp/.docker.xauth
     if [ ! -f $XAUTH ]
     then
