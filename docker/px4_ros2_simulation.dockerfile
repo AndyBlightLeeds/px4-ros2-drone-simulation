@@ -20,6 +20,7 @@ COPY ./scripts /scripts
 
 # Create user with UID and GID matching those on my PC.
 # This allows the user to delete build products created in the source tree.
+# Also add user build to sudoers list.
 RUN groupadd -g 1000 build && \
     useradd -u 1000 -g 1000 -m -s /bin/bash build && \
     echo "build ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/build && \
