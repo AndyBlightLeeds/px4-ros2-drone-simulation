@@ -28,8 +28,6 @@ RUN groupadd -g 1000 build && \
 ENV HOME /home/build
 
 # Installation is done as root.
-# Set git directory to user build's home directory.
-ENV USER_DIR /home/build
 # Run one script at a time to allow the image to be built in layers.
 RUN cd /scripts/install && bash -x ./install_ros2_gazebo11.bash
 RUN cd /scripts/install && bash -x ./install_fast_rtps.bash

@@ -15,6 +15,6 @@ if [ -f /.dockerenv ]
 then
     ln -sf ~/code drone
 else
-    echo "DRONE_GIT_DIR = ${DRONE_GIT_DIR}"
+    # echo "DRONE_GIT_DIR = ${DRONE_GIT_DIR}"
     ln -sf ${DRONE_GIT_DIR}
 fi

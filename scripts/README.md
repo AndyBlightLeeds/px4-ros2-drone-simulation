@@ -15,8 +15,8 @@ cd ../build
 ./build_all.bash
 ```
 
-The install and build scripts took around 30 minutes on my PC.  Then they
-have completed, start Gazebo, a simulated Iris drone and the FastRTPS ROS2
+The install and build scripts took around 30 minutes on my PC.  When they
+have finished, start Gazebo, a simulated Iris drone and the FastRTPS ROS2
 bridge using the commands:
 
 ```text
