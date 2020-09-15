@@ -8,8 +8,8 @@ PROJECT_DIR=${USER_DIR}
 COLCON_WS_DIR=${PROJECT_DIR}/px4_drone_simulation_ws
 COLCON_SRC_DIR=${COLCON_WS_DIR}/src
 # Export git and source directories.
-GIT_DIR=${USER_DIR}/git
-PX4_GIT_DIR=${GIT_DIR}/andyblightleeds
+GIT_DIR=${USER_DIR}/git/andyblightleeds
+PX4_GIT_DIR=${GIT_DIR}
 PX4_GITHUB_URL=https://github.com/andyblightleeds
 PX4_FIRMWARE_GIT_DIR=${PX4_GIT_DIR}/px4_firmware
 PX4_ROS_COM_DIR=${COLCON_SRC_DIR}/px4_ros_com
