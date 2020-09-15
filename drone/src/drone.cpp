@@ -37,7 +37,9 @@ Drone::~Drone()
 void Drone::Run()
 {
   RCUTILS_LOG_INFO_NAMED("Drone", "%s: started", __FUNCTION__);
-  // TestAutoModes();
+  // It is best to work on each test individually as the previous tests
+  // may not leave everything pristine.
+  TestAutoModes();
   TestMission();
   exec_.cancel();
 }

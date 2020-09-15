@@ -3165,3 +3165,156 @@ auto disarming but not taking off, even though manual control is available.
 Arms, take off using position setpoint sent but no take off.
 
 TODO: Adding debug to PX4 code to find out what is going on.
+
+## MAVLink review
+
+To get to the end goal of flying a waypoint mission, I need to work out the
+exact sequence of uORB messages that need to happen in PX4.  MAVLink works
+and still works with things like QGroundControl.  So, my thoughts are like
+this:
+
+MAVLink works so I need to work out what uORB messages the MavLink module
+sends when a mission takes place.  Use QGroundControl to send a mission to
+the simulation.  Record all uORB messages when the mission is sent and while
+the mission takes place.  Then work out what messages are relevant and
+implement a uORB solution.
+
+Downloaded QGroundControl image from here: <https://s3-us-west-2.amazonaws.com/qgroundcontrol/latest/QGroundControl.AppImage>
+After `chmod +x`, this just works on Ubuntu.  I was able to set a waypoint
+mission and upload it to the simulated Iris drone.  When I started the mission,
+the Iris drone took off and started to fly the mission.  RTL also worked.  I
+think what is happening is that the mission is being up loaded to storage
+(PX4 dataman is used) and then there is a mode change to make the drone fly
+the preloaded mission.  RTL is auto RTL that already works.
+
+
+### Analysis of a short flight
+
+The mission in QGroundControl has 7 steps:
+
+1. Mission Start
+1. Takeoff
+1. Waypoint
+1. Waypoint
+1. Waypoint
+1. Waypoint
+1. Return to Launch
+
+The flight was at 50.0m relative to ground.
+Ground speed was set to 5.0m/s.
+
+Analysis of the logs (using ulog2csv <https://github.com/PX4/pyulog>) shows
+that file `13_06_19_position_setpoint_triplet_0.csv` was generated and
+contained (after some formatting to show each position setpoint in the
+triplet and breaking the first entry in to fives to help decode it):
+
+```text
+timestamp,
+  previous.timestamp,previous.lat,previous.lon,previous.x,previous.y,
+  previous.z,previous.vx,previous.vy,previous.vz,previous.alt,
+  previous.yaw,previous.yawspeed,previous.loiter_radius,previous.pitch_min,previous.a_x,
+  previous.a_y,previous.a_z,previous.acceptance_radius,previous.cruising_speed,previous.cruising_throttle,
+  previous.valid,previous.type,previous.position_valid,previous.velocity_valid,previous.velocity_frame,
+  previous.alt_valid,previous.yaw_valid,previous.yawspeed_valid,previous.landing_gear,previous.loiter_direction,
+  previous.acceleration_valid,previous.acceleration_is_force,previous.disable_weather_vane,previous._padding0[0],previous._padding0[1],
+  previous._padding0[2],previous._padding0[3],previous._padding0[4],previous._padding0[5],previous._padding0[6],
+  current.timestamp,current.lat,current.lon,current.x,current.y,current.z,current.vx,current.vy,current.vz,current.alt,current.yaw,current.yawspeed,current.loiter_radius,current.pitch_min,current.a_x,current.a_y,current.a_z,current.acceptance_radius,current.cruising_speed,current.cruising_throttle,current.valid,current.type,current.position_valid,current.velocity_valid,current.velocity_frame,current.alt_valid,current.yaw_valid,current.yawspeed_valid,current.landing_gear,current.loiter_direction,current.acceleration_valid,current.acceleration_is_force,current.disable_weather_vane,current._padding0[0],current._padding0[1],current._padding0[2],current._padding0[3],current._padding0[4],current._padding0[5],current._padding0[6],
+  next.timestamp,next.lat,next.lon,next.x,next.y,next.z,next.vx,next.vy,next.vz,next.alt,next.yaw,next.yawspeed,next.loiter_radius,next.pitch_min,next.a_x,next.a_y,next.a_z,next.acceptance_radius,next.cruising_speed,next.cruising_throttle, next.valid,next.type,next.position_valid,next.velocity_valid,next.velocity_frame,next.alt_valid,next.yaw_valid,next.yawspeed_valid,next.landing_gear,next.loiter_direction,next.acceleration_valid,next.acceleration_is_force,next.disable_weather_vane,next._padding0[0],next._padding0[1],next._padding0[2],next._padding0[3],next._padding0[4],next._padding0[5],next._padding0[6]
+2212276000,
+  2212276000,nan,nan,0.0,0.0,
+  0.0,0.0,0.0,0.0,0.0,
+  0.0,0.0,50.0,0.0,0.0,
+  0.0,0.0,2.0,-1.0,-1.0,
+  0,5,0,0,0,
+  0,0,0,0,0,
+  0,0,0,0,0,
+  0,0,0,0,0,
+  2212276000,47.39774199731325,8.54559342477221,0.0,0.0,0.0,0.0,0.0,0.0,497.9264,1.6278163,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,3,0,0,0,0,1,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2212276000,47.397743225097656,8.54559326171875,0.0,0.0,0.0,0.0,0.0,0.0,497.9264,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0
+2223892000,
+  2212276000,47.39774199731325,8.54559342477221,0.0,0.0,0.0,0.0,0.0,0.0,497.9264,1.6278163,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,3,0,0,0,0,1,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2223892000,47.397743225097656,8.54559326171875,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2223892000,47.39722442626953,8.54549503326416,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0
+2223956000,
+  2223892000,47.397743225097656,8.54559326171875,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2223952000,47.39722442626953,8.54549503326416,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2223956000,47.397254943847656,8.54493522644043,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0
+2237492000,
+  2223952000,47.39722442626953,8.54549503326416,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2237488000,47.397254943847656,8.54493522644043,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2237492000,47.397735595703125,8.544596672058105,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0
+2247716000,
+  2237488000,47.397254943847656,8.54493522644043,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2247712000,47.397735595703125,8.544596672058105,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2247716000,47.398128509521484,8.545098304748535,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0
+2261456000,
+  2247712000,47.397735595703125,8.544596672058105,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2261452000,47.398128509521484,8.545098304748535,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2247716000,47.398128509521484,8.545098304748535,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0
+2275236000,
+  2247712000,47.397735595703125,8.544596672058105,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2261452000,47.398128509521484,8.545098304748535,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,
+  2247716000,47.398128509521484,8.545098304748535,0.0,0.0,0.0,0.0,0.0,0.0,497.94034,nan,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0
+2275240000,
+  2275240000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2275240000,47.39811658747975,8.545079742475444,0.0,0.0,0.0,0.0,0.0,0.0,517.9403,0.8098208,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,
+  2275240000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2285692000,
+  2275240000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2285692000,47.397741900075886,8.545593370124351,0.0,0.0,0.0,0.0,0.0,0.0,517.9403,2.3968291,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,
+  2275240000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2299352000,
+  2275240000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2299352000,47.397741900075886,8.545593370124351,0.0,0.0,0.0,0.0,0.0,0.0,487.94034,1.6280317,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,1,4,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,
+  2275240000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2336796000,
+  2336796000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2336796000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2336796000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2336852000,
+  2336852000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2336852000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2336852000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2336972000,
+  2336972000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2336972000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2336972000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2337152000,
+  2337152000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2337152000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2337152000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2337392000,
+  2337392000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2337392000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2337392000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2337572000,
+  2337572000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2337572000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+  2337572000,nan,nan,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,2.0,-1.0,-1.0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+```
+
+This shows how the setpoint_position_triplet should be used.
+
+next.type is interesting. Sequence is:
+
+```text
+(5, 3, 0),  // 5 is SETPOINT_TYPE_IDLE, 3 is SETPOINT_TYPE_TAKEOFF
+(3, 0, 0),  // 0 in current is SETPOINT_TYPE_POSITION, position setpoint.
+(0, 0, 0),
+(0, 0, 0),
+(0, 0, 0),
+(0, 0, 0),
+(0, 0, 0)
+```
+
+After this sequence, all setpoints are invalid. My guess is that setpoints are
+being sent to "keep something alive" while the drone auto-disarms.
+
+The `alt` values are easy to work out. 487.94034m is ground level, so the
+altitudes are: take off to +10m, then all waypoints are +10m, RTL gains height
+to +20m, moves to landing point and then lands.
+
+Loiter radius is set to 50.0m and acceptance radius is set to 2.0m.
+
+`yaw` values are set for RTL but mostly left as `nan` which is head in the
+direction of travel.

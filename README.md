@@ -13,13 +13,14 @@ The versions of software used are:
 * Gazebo 11.
 * ROS2 Eloquent.
 * The PX4 repos Firware, px4_msgs, px4_ros_com, sitl_gazebo.  Git branches
-of these repos are used to fix revisions.
+of these repos are used to fix revisions.  There is also a small fix on the
+PX4 Firmware branch.
 
-## IMPORTANT NOTE
+## __IMPORTANT NOTES__
 
-Running the Gazebo server and client on a PC requires a decent graphics card.
-The simplest way to judge if it is good enough is to state that you need a card
-with at least 4GB of RAM.  I tried an old 1GB card which did work but was
+1. __This repo must be checked out in the following directory `$HOME/git/andyblightleeds` for the scripts to work.__
+2. __Running the Gazebo server and client on a PC requires a graphics card
+with at least 4GB of RAM.__  I tried an old 1GB card which worked but was
 painfully slow.  I then used a laptop with an NVidia M2000 4GB card and it
 worked well.
 
@@ -34,7 +35,7 @@ scripts were chosen as they can be used directly on a PC, a small companion
 computer mounted on a drone (e.g. a Raspberry Pi) or in a docker container.
 The scripts are split into three directories, install, build and run.
 
-To install and build the simulation code on your PC, run the following 
+To install and build the simulation code on your PC, run the following
 commands:
 
 ```text
@@ -44,7 +45,7 @@ cd ../build
 ./build_all.bash
 ```
 
-The install and build scripts took around 30 minutes on my PC.  Then they 
+The install and build scripts took around 30 minutes on my PC.  Then they
 have completed, start Gazebo, a simulated Iris drone and the FastRTPS ROS2
 bridge using the commands:
 
@@ -53,7 +54,7 @@ cd scripts/run
 ./auto_start.bash
 ```
 
-You should see the Gazebo client start with an Iris drone on the ground. 
+You should see the Gazebo client start with an Iris drone on the ground.
 To start the drone test software, run the following commands:
 
 ```text
@@ -66,10 +67,10 @@ You should see the drone execute the test missions defined in `drone.cpp`.
 
 ### Debugging
 
-I use Kubuntu instead of Ubuntu as I prefer the user interface.  The script 
-`scripts/run/konsole_start.bash` does the same as `auto_start.bash` but opens 
+I use Kubuntu instead of Ubuntu as I prefer the user interface.  The script
+`scripts/run/konsole_start.bash` does the same as `auto_start.bash` but opens
 a new Konsole tab for each shell.  This make debugging much easier as you have
-an interactive shell open on the PX4 instance and can see messages from each 
+an interactive shell open on the PX4 instance and can see messages from each
 process in a different tab.
 
 ## References
@@ -84,4 +85,6 @@ Gazebo.  There are also countless uses of the following sites:
 ## Status
 
 * Drone::TestAutoModes works.
-* Drone::TestMission arms but does not take off. This uses a waypont mission but something is broken.
+* Drone::TestMission does not take off using setpoint_position messages.
+I must be missing something...
+* TODO. #1 Move the tests into a proper test harness.
