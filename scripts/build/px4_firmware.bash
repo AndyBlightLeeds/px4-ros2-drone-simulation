@@ -1,6 +1,6 @@
 #!/bin/bash
 # Sets up the px4 Firmware package and builds it.
-set -ex
+set -e
 
 . ../project_vars.bash
 

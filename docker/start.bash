@@ -46,6 +46,6 @@ else
         --env="XAUTHORITY=$XAUTH" \
         --volume="$XAUTH:$XAUTH" \
         --gpus all \
-        ${SIMULATION_IMAGE}:${SIMULATION_TAG}  &> /dev/null
+        ${DOCKER_HUB_USER_NAME}/${SIMULATION_IMAGE}:${SIMULATION_TAG} &> /dev/null
     echo "Container '${SIMULATION_CONTAINER_NAME}' running."
 fi

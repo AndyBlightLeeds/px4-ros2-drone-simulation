@@ -1,7 +1,8 @@
 # Variables for other scripts.
 
-ROS2_DESKTOP_IMAGE="ubuntu1804ros2eloquentdesktop"
-ROS2_DESKTOP_TAG="v1"
-SIMULATION_IMAGE="px4_ros2_simulation"
+DOCKER_HUB_USER_NAME="andyblightleeds"
+ROS2_DESKTOP_IMAGE="ros2-eloquent-desktop"
+ROS2_DESKTOP_TAG="ubuntu1804"
+SIMULATION_IMAGE="px4-ros2-drone-simulation"
 SIMULATION_TAG="v2"
 SIMULATION_CONTAINER_NAME="gazebo_px4_sim"

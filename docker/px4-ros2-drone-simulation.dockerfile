@@ -1,7 +1,7 @@
 # Ubuntu 18.04LTS, Gazebo 11, PX4, ROS2 Simulation container.
 
 # Start with base ROS2 image.
-FROM ubuntu1804ros2eloquentdesktop:v1
+FROM andyblightleeds/ros2-eloquent-desktop:ubuntu1804
 
 # Allow apt install to work properly.
 ENV DEBIAN_FRONTEND noninteractive

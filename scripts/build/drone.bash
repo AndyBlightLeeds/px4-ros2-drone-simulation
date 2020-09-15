@@ -6,5 +6,5 @@ set -e
 
 # Build.
 cd ${COLCON_WS_DIR}
-. /opt/ros/${ROS2_DISTRO}/setup.bash
+. install/setup.bash
 colcon build --merge-install  --packages-select drone

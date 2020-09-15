@@ -15,13 +15,11 @@ The versions of software used are:
 * Gazebo 11.
 * ROS2 Eloquent.
 * The PX4 repos Firware, px4_msgs, px4_ros_com, sitl_gazebo.  Git branches
-of these repos are used to fix revisions.  There is also a small fix on the
-PX4 Firmware branch.
+of these repos are used to fix revisions.  There is also a small fix on the PX4 Firmware branch.
 
 ## __IMPORTANT NOTES__
 
-1. __This repo must be checked out in the following directory `$HOME/git/andyblightleeds` for the scripts to work.__
-2. __Running the Gazebo server and client on a PC requires a graphics card
+__Running the Gazebo server and client on a PC requires a graphics card
 with at least 4GB of RAM.__  I tried an old 1GB card which worked but was
 painfully slow.  I then used a laptop with an NVidia M2000 4GB card and it
 worked well.
