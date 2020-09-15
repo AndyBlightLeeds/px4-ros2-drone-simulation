@@ -1,5 +1,7 @@
 # px4-ros2-drone-simulation
 
+![Build and install.](https://github.com/AndyBlightLeeds/px4-ros2-drone-simulation/workflows/Build%20and%20install./badge.svg)
+
 This repo allows the user to set up, build and run a simulation using:
 
 * An Iris drone running PX4 firmware.
