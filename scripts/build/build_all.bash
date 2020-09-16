@@ -10,9 +10,13 @@ set -e
 # px4_msgs needs to be built before px4_ros_com.
 ./px4_msgs.bash
 ./px4_ros_com.bash
-
-# Now build the rest.
 ./sitl_gazebo.bash
-./drone.bash
+
+# Only build the drone code if not in a docker.  Mounting a volume during the
+# build is not possible, so build the drone code manually.
+if [ ! -f /.dockerenv ]
+then
+    ./drone.bash
+fi
 
 echo "Build took $SECONDS seconds."

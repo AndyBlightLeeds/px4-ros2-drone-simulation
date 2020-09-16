@@ -7,4 +7,4 @@ set -e
 # Build.
 cd ${COLCON_WS_DIR}
 . install/setup.bash
-colcon build --merge-install  --packages-select drone
+colcon build --merge-install --packages-select drone

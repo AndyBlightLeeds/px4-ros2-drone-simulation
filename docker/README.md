@@ -1,33 +1,42 @@
 # Docker
 
 This directory provides the user with a method to quickly build and test the
-drone code in a docker container.  Scripts are provided to create the docker
-image and to start, stop and attach to the container.
+drone package in this repo in a docker container.  Scripts are provided to
+create the docker image and to start, stop and attach to the docker container.
 
-IMPORTANT NOTE: running the simulation requires a graphics card with
-4GB RAM or better.
+__IMPORTANT NOTE: running the simulation requires a graphics card with
+4GB RAM or better.__
 
-To set up your PC to use NVidia, please read the section `Set up NVidia`.
-Docker support other graphics cards but I have no idea how to configure them!
+To set up your PC to use a NVidia graphics card, please read the section
+`Set up NVidia`.  Docker supports other graphics cards but these have not been
+tested or documented.
 
 ## Basic operation
 
-The script `docker/build.bash` creates the docker container, installing all
-packages as defined in the `scripts/install` directory.  Do this just once!
+The script `~/code/docker/build.bash` creates the docker container, installing all
+packages as defined in the `~/code/scripts/install` directory.  Do this just once!
 This process took about 30 minutes on my PC, so get on with something else
 while the image is built.
 
-To start the container, use `docker/start.bash`.  This script starts the container
-and leaves it running until `docker/stop.bash` is called.
+To start the container, use `~/code/docker/start.bash`.  This script starts the
+container and leaves it running until `~/code/docker/stop.bash` is called.
 
 When the container is running, you can get a Bash user prompt attached to the
-container using `docker/attach.bash`.
+container using `~/code/docker/attach.bash`.
 
-To start the simulation, start the container and attach to the container.
-At the new Bash prompt, enter the following:
+After attaching to the container for the first time, build the drone package
+as follows:
 
 ```text
-cd code/scripts/run/
+cd ~/code/scripts/build
+./drone.bash
+```
+
+Once this is done, you are ready to start the simulation. At the Bash prompt,
+enter the following:
+
+```text
+cd ~/code/scripts/run
 ./auto_start.bash
 ```
 

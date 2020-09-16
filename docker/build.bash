@@ -1,7 +1,7 @@
 #!/bin/bash
 # Build the docker image.
 # Not using set -e as `docker inspect` can legitimately fail.
-set -x
+# set -x
 
 scripts_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &>/dev/null && pwd )"
 cd ${scripts_dir}
