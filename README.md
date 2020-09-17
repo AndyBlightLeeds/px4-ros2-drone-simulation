@@ -15,7 +15,8 @@ The versions of software used are:
 * Gazebo 11.
 * ROS2 Eloquent.
 * The PX4 repos Firware, px4_msgs, px4_ros_com, sitl_gazebo.  Git branches
-of these repos are used to fix revisions.  There is also a small fix on the PX4 Firmware branch.
+of these repos are used to fix revisions.  There is also a small fix on the
+PX4 Firmware branch.
 
 ## __IMPORTANT NOTES__
 

@@ -40,4 +40,34 @@ install(  TARGETS
             lib/${PROJECT_NAME}
 )
 
+if(BUILD_TESTING)
+  # Linting
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+
+  # Auto pilot tests
+  find_package(ament_cmake_gtest REQUIRED)
+  set(TEST_AUTO_PILOT test_auto_pilot)
+  ament_add_gtest_executable(${TEST_AUTO_PILOT}
+    src/auto_pilot_px4.cpp
+    src/drone.cpp
+    test/test_auto_pilot_px4.cpp
+  )
+  target_include_directories(${TEST_AUTO_PILOT} PRIVATE
+    ${CMAKE_SOURCE_DIR}
+  )
+  if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # Cannot use -Wpedantic when using GoogleMock (spews many warnings about the macros used).
+    target_compile_options(${TEST_AUTO_PILOT} PRIVATE -Wall -Wextra)
+  endif()
+  ament_target_dependencies(${TEST_AUTO_PILOT}
+    "rclcpp"
+    "rclcpp_action"
+    "std_msgs"
+    "sensor_msgs"
+    "nav_msgs"
+    "px4_msgs"
+  )
+endif()  # BUILD_TESTING
+
 ament_package()
