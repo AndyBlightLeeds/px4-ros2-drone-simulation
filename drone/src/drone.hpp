@@ -15,11 +15,13 @@
 #ifndef DRONE_HPP_
 #define DRONE_HPP_
 
+#include <memory>
+
 #include "auto_pilot_interface.hpp"
 
 /**
  * @brief The drone control software.
- * @note This is a first hack so only controls basic flight commands.
+ * @note This is a first hack so only tests the autopilot code.
  * @todo Extend this a lot!
  */
 class Drone
@@ -44,4 +46,4 @@ private:
   rclcpp::executors::SingleThreadedExecutor & exec_;
 };
 
-#endif // _DRONE_HPP_
+#endif  // DRONE_HPP_

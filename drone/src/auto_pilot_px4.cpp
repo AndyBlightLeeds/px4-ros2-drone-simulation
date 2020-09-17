@@ -15,16 +15,19 @@
 #include "auto_pilot_px4.hpp"
 
 #include <cmath>
-#include <rclcpp/rclcpp.hpp>
-#include <px4_msgs/msg/battery_status.hpp>
-#include <px4_msgs/msg/offboard_control_mode.hpp>
-#include <px4_msgs/msg/position_setpoint_triplet.hpp>
-#include <px4_msgs/msg/telemetry_status.hpp>
-#include <px4_msgs/msg/vehicle_command.hpp>
-#include <px4_msgs/msg/vehicle_command_ack.hpp>
-#include <px4_msgs/msg/vehicle_gps_position.hpp>
-#include <px4_msgs/msg/vehicle_land_detected.hpp>
-#include <px4_msgs/msg/vehicle_status.hpp>
+#include <vector>
+
+#include "rclcpp/rclcpp.hpp"
+#include "px4_msgs/msg/battery_status.hpp"
+#include "px4_msgs/msg/offboard_control_mode.hpp"
+#include "px4_msgs/msg/position_setpoint_triplet.hpp"
+#include "px4_msgs/msg/telemetry_status.hpp"
+#include "px4_msgs/msg/vehicle_command.hpp"
+#include "px4_msgs/msg/vehicle_command_ack.hpp"
+#include "px4_msgs/msg/vehicle_gps_position.hpp"
+#include "px4_msgs/msg/vehicle_land_detected.hpp"
+#include "px4_msgs/msg/vehicle_status.hpp"
+
 #include "auto_pilot_interface.hpp"
 
 const std::chrono::milliseconds kWaitLoopTime(100);
@@ -135,7 +138,7 @@ int AutoPilotPX4::TakeOff(float height_m)
   int result = 0;
   RCLCPP_INFO(get_logger(), "%s: called: height %f", __FUNCTION__, height_m);
 
-  // Disarm if armed.uint64 timestamp		# time since system start (microseconds)
+  // Disarm if armed.
   // Arm
   result = SendArm(true);
   if (result == 0) {
@@ -228,11 +231,11 @@ int AutoPilotPX4::FlyMission(const std::vector<Waypoint> & waypoints, bool retur
   size_t waypoint_index = 0;
   size_t max_waypoints = waypoints.size();
   bool waypoint_sent = false;
-  while(rclcpp::ok() && waypoint_index < max_waypoints ) {
+  while (rclcpp::ok() && waypoint_index < max_waypoints) {
     // Process each waypoint.
     if (!waypoint_sent) {
       current_waypoint = waypoints[waypoint_index];
-        uint8_t type = px4_msgs::msg::PositionSetpoint::SETPOINT_TYPE_POSITION;
+      uint8_t type = px4_msgs::msg::PositionSetpoint::SETPOINT_TYPE_POSITION;
       if (waypoint_index == 0) {
         type = px4_msgs::msg::PositionSetpoint::SETPOINT_TYPE_TAKEOFF;
       } else if (waypoint_index == max_waypoints - 1) {
@@ -471,7 +474,8 @@ void AutoPilotPX4::SendManualControlSetpoint()
   manual_control_setpoint_pub_->publish(msg);
 }
 
-void AutoPilotPX4::SendOffboardControlMode() {
+void AutoPilotPX4::SendOffboardControlMode()
+{
   RCLCPP_DEBUG(get_logger(), "%s: called", __FUNCTION__);
   // Fill out the message.
   px4_msgs::msg::OffboardControlMode msg;
@@ -491,7 +495,8 @@ void AutoPilotPX4::SendOffboardControlMode() {
   offboard_control_mode_pub_->publish(msg);
 }
 
-void AutoPilotPX4::SendPositionSetpointTriplet(uint8_t type, const Waypoint &waypoint) {
+void AutoPilotPX4::SendPositionSetpointTriplet(uint8_t type, const Waypoint & waypoint)
+{
   RCLCPP_INFO(get_logger(), "%s: called, type %d: %dmm, %d, %d", __FUNCTION__, type,
     waypoint.location.altitude, waypoint.location.latitude, waypoint.location.longitude);
   if (type == px4_msgs::msg::PositionSetpoint::SETPOINT_TYPE_TAKEOFF) {
@@ -588,7 +593,8 @@ void AutoPilotPX4::SetCommandMessageDefaults(px4_msgs::msg::VehicleCommand * msg
 {
   // Comments from VehicleCommand.msg file.
   msg_vehicle_command->timestamp = get_clock()->now().nanoseconds() / 1000;
-  // 0: First transmission of this command. 1-255: Confirmation transmissions (e.g. for kill command)
+  // 0: First transmission of this command. 1-255: Confirmation transmissions
+  // (e.g. for kill command)
   msg_vehicle_command->confirmation = 0;
   // System sending the command
   msg_vehicle_command->source_system = source_system_;
@@ -618,30 +624,6 @@ void AutoPilotPX4::VehicleCommandAckCallback(px4_msgs::msg::VehicleCommandAck::C
 {
   RCLCPP_DEBUG(get_logger(), "%s: called: command %d, result %d",
     __FUNCTION__, msg->command, msg->result);
-  // uint64 timestamp		# time since system start (microseconds)
-  // uint8 VEHICLE_RESULT_ACCEPTED = 0
-  // uint8 VEHICLE_RESULT_TEMPORARILY_REJECTED = 1
-  // uint8 VEHICLE_RESULT_DENIED = 2
-  // uint8 VEHICLE_RESULT_UNSUPPORTED = 3
-  // uint8 VEHICLE_RESULT_FAILED = 4
-  // uint8 VEHICLE_RESULT_IN_PROGRESS = 5
-
-  // uint16 ARM_AUTH_DENIED_REASON_GENERIC = 0
-  // uint16 ARM_AUTH_DENIED_REASON_NONE = 1
-  // uint16 ARM_AUTH_DENIED_REASON_INVALID_WAYPOINT = 2
-  // uint16 ARM_AUTH_DENIED_REASON_TIMEOUT = 3
-  // uint16 ARM_AUTH_DENIED_REASON_AIRSPACE_IN_USE = 4
-  // uint16 ARM_AUTH_DENIED_REASON_BAD_WEATHER = 5
-
-  // uint8 ORB_QUEUE_LENGTH = 3
-
-  // uint16 command
-  // uint8 result
-  // bool from_external
-  // uint8 result_param1
-  // int32 result_param2
-  // uint8 target_system
-  // uint8 target_component
 }
 
 void AutoPilotPX4::VehicleGpsPositionCallback(px4_msgs::msg::VehicleGpsPosition::ConstSharedPtr msg)
@@ -660,42 +642,6 @@ void AutoPilotPX4::VehicleGpsPositionCallback(px4_msgs::msg::VehicleGpsPosition:
     call_count = 0;
   }
   ++call_count;
-  // # GPS position in WGS84 coordinates.
-  // # the field 'timestamp' is for the position & velocity (microseconds)
-  // uint64 timestamp		# time since system start (microseconds)
-
-  // int32 lat			# Latitude in 1E-7 degrees
-  // int32 lon			# Longitude in 1E-7 degrees
-  // int32 alt			# Altitude in 1E-3 meters above MSL, (millimetres)
-  // int32 alt_ellipsoid                # Altitude in 1E-3 meters bove Ellipsoid, (millimetres)
-
-  // float32 s_variance_m_s		# GPS speed accuracy estimate, (metres/sec)
-  // float32 c_variance_rad		# GPS course accuracy estimate, (radians)
-  // uint8 fix_type # 0-1: no fix, 2: 2D fix, 3: 3D fix, 4: RTCM code differential, 5: Real-Time Kinematic, float, 6: Real-Time Kinematic, fixed, 8: Extrapolated. Some applications will not use the value of this field unless it is at least two, so always correctly fill in the fix.
-
-  // float32 eph			# GPS horizontal position accuracy (metres)
-  // float32 epv			# GPS vertical position accuracy (metres)
-
-  // float32 hdop			# Horizontal dilution of precision
-  // float32 vdop			# Vertical dilution of precision
-
-  // int32 noise_per_ms		# GPS noise per millisecond
-  // int32 jamming_indicator		# indicates jamming is occurring
-
-  // float32 vel_m_s			# GPS ground speed, (metres/sec)
-  // float32 vel_n_m_s		# GPS North velocity, (metres/sec)
-  // float32 vel_e_m_s		# GPS East velocity, (metres/sec)
-  // float32 vel_d_m_s		# GPS Down velocity, (metres/sec)
-  // float32 cog_rad			# Course over ground (NOT heading, but direction of movement), -PI..PI, (radians)
-  // bool vel_ned_valid		# True if NED velocity is valid
-
-  // int32 timestamp_time_relative	# timestamp + timestamp_time_relative = Time of the UTC timestamp since system start, (microseconds)
-  // uint64 time_utc_usec		# Timestamp (microseconds, UTC), this is the timestamp which comes from the gps module. It might be unavailable right after cold start, indicated by a value of 0
-
-  // uint8 satellites_used		# Number of satellites used
-
-  // float32 heading			# heading angle of XYZ body frame relprogram to NED. Set to NaN if not available and updated (used for dual antenna GPS), (rad, [-PI, PI])
-  // float32 heading_offset		# heading offset of dual antenna array in body frame. Set to NaN if not applicable. (rad, [-PI, PI])
 }
 
 
@@ -706,13 +652,6 @@ void AutoPilotPX4::VehicleLandDetectedCallback(
   RCLCPP_DEBUG(get_logger(), "%s: called: landed %d", __FUNCTION__, msg->landed);
   landed_data_.timestamp = msg->timestamp;
   landed_data_.landed = msg->landed;
-  // uint64 timestamp	# time since system start (microseconds)
-  // float32 alt_max    # maximum altitude in [m] that can be reached
-  // bool freefall		# true if vehicle is currently in free-fall
-  // bool ground_contact	# true if vehicle has ground contact but is not landed (1. stage)
-  // bool maybe_landed	# true if the vehicle might have landed (2. stage)
-  // bool landed		# true if vehicle is currently landed on the ground (3. stage)
-  // bool in_ground_effect # indicates if from the perspective of the landing detector the vehicle might be in ground effect (baro). This flag will become true if the vehicle is not moving horizontally and is descending (crude assumption that user is landing).
 }
 
 
@@ -731,39 +670,4 @@ void AutoPilotPX4::VehicleStatusCallback(px4_msgs::msg::VehicleStatus::ConstShar
   vehicle_status_data_.navigation_state = msg->nav_state;
   vehicle_status_data_.system_id = msg->system_id;
   vehicle_status_data_.timestamp = msg->timestamp;
-
-  // # If you change the order, add or remove arming_state_t states make sure to update the arrays
-  // # in state_machine_helper.cpp as well.
-  // uint64 timestamp				# time since system start (microseconds)
-
-  // uint8 ARMING_STATE_INIT = 0
-  // uint8 ARMING_STATE_STANDBY = 1
-  // uint8 ARMING_STATE_ARMED = 2
-  // uint8 ARMING_STATE_STANDBY_ERROR = 3
-  // uint8 ARMING_STATE_SHUTDOWN = 4
-  // uint8 ARMING_STATE_IN_AIR_RESTORE = 5
-  // uint8 ARMING_STATE_MAX = 6
-
-  // # Navigation state, i.e. "what should vehicle do".
-  // uint8 NAVIGATION_STATE_MANUAL = 0		# Manual mode
-  // uint8 NAVIGATION_STATE_ALTCTL = 1		# Altitude control mode
-  // uint8 NAVIGATION_STATE_POSCTL = 2		# Position control mode
-  // uint8 NAVIGATION_STATE_AUTO_MISSION = 3		# Auto mission mode
-  // uint8 NAVIGATION_STATE_AUTO_LOITER = 4		# Auto loiter mode
-  // uint8 NAVIGATION_STATE_AUTO_RTL = 5		# Auto return to launch mode
-  // uint8 NAVIGATION_STATE_AUTO_LANDENGFAIL = 8        # Auto land on engine failure
-  // uint8 NAVIGATION_STATE_AUTO_LANDGPSFAIL = 9	# Auto land on gps failure (e.g. open loop loiter down)
-  // uint8 NAVIGATION_STATE_ACRO = 10		# Acro mode
-  // uint8 NAVIGATION_STATE_UNUSED = 11		# Free slot
-  // uint8 NAVIGATION_STATE_DESCEND = 12		# Descend mode (no position control)
-  // uint8 NAVIGATION_STATE_TERMINATION = 13		# Termination mode
-  // uint8 NAVIGATION_STATE_OFFBOARD = 14
-  // uint8 NAVIGATION_STATE_STAB = 15		# Stabilized mode
-  // uint8 NAVIGATION_STATE_RATTITUDE = 16		# Rattitude (aka "flip") mode
-  // uint8 NAVIGATION_STATE_AUTO_TAKEOFF = 17	# Takeoff
-  // uint8 NAVIGATION_STATE_AUTO_LAND = 18		# Land
-  // uint8 NAVIGATION_STATE_AUTO_FOLLOW_TARGET = 19	# Auto Follow
-  // uint8 NAVIGATION_STATE_AUTO_PRECLAND = 20	# Precision land with landing target
-  // uint8 NAVIGATION_STATE_ORBIT = 21       # Orbit in a circle
-  // uint8 NAVIGATION_STATE_MAX = 22
 }

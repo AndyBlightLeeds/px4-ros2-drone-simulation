@@ -14,8 +14,10 @@
 
 #include "drone.hpp"
 #include <chrono>
+#include <memory>
 #include <thread>
-#include <rclcpp/rclcpp.hpp>
+#include <vector>
+#include "rclcpp/rclcpp.hpp"
 #include "auto_pilot_interface.hpp"
 
 

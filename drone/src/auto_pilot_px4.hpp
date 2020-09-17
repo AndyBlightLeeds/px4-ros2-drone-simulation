@@ -18,21 +18,22 @@
 
 #include "auto_pilot_interface.hpp"
 
-#include <rclcpp/rclcpp.hpp>
 #include <chrono>
 #include <cmath>
 #include <thread>
+#include <vector>
 
-#include <px4_msgs/msg/battery_status.hpp>
-#include <px4_msgs/msg/manual_control_setpoint.hpp>
-#include <px4_msgs/msg/offboard_control_mode.hpp>
-#include <px4_msgs/msg/position_setpoint_triplet.hpp>
-#include <px4_msgs/msg/telemetry_status.hpp>
-#include <px4_msgs/msg/vehicle_command.hpp>
-#include <px4_msgs/msg/vehicle_command_ack.hpp>
-#include <px4_msgs/msg/vehicle_gps_position.hpp>
-#include <px4_msgs/msg/vehicle_land_detected.hpp>
-#include <px4_msgs/msg/vehicle_status.hpp>
+#include "rclcpp/rclcpp.hpp"
+#include "px4_msgs/msg/battery_status.hpp"
+#include "px4_msgs/msg/manual_control_setpoint.hpp"
+#include "px4_msgs/msg/offboard_control_mode.hpp"
+#include "px4_msgs/msg/position_setpoint_triplet.hpp"
+#include "px4_msgs/msg/telemetry_status.hpp"
+#include "px4_msgs/msg/vehicle_command.hpp"
+#include "px4_msgs/msg/vehicle_command_ack.hpp"
+#include "px4_msgs/msg/vehicle_gps_position.hpp"
+#include "px4_msgs/msg/vehicle_land_detected.hpp"
+#include "px4_msgs/msg/vehicle_status.hpp"
 
 class AutoPilotPX4 : public AutoPilotInterface
 {
@@ -120,7 +121,7 @@ private:
   void SendLand();
   void SendManualControlSetpoint();
   void SendOffboardControlMode();
-  void SendPositionSetpointTriplet(uint8_t type, const Waypoint &waypoint);
+  void SendPositionSetpointTriplet(uint8_t type, const Waypoint & waypoint);
   void SendRTL();
   void SendSetHome();
   void SendTakeoff();
@@ -154,7 +155,8 @@ private:
   // Pubs.
   rclcpp::Publisher<px4_msgs::msg::ManualControlSetpoint>::SharedPtr manual_control_setpoint_pub_;
   rclcpp::Publisher<px4_msgs::msg::OffboardControlMode>::SharedPtr offboard_control_mode_pub_;
-  rclcpp::Publisher<px4_msgs::msg::PositionSetpointTriplet>::SharedPtr position_setpoint_triplet_pub_;
+  rclcpp::Publisher<px4_msgs::msg::PositionSetpointTriplet>::SharedPtr
+    position_setpoint_triplet_pub_;
   rclcpp::Publisher<px4_msgs::msg::TelemetryStatus>::SharedPtr telemetry_status_pub_;
   rclcpp::Publisher<px4_msgs::msg::VehicleCommand>::SharedPtr vehicle_command_pub_;
   // Subs.

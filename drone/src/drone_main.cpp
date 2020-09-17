@@ -14,8 +14,9 @@
 
 #define AUTO_PILOT_PX4
 
+#include <memory>
 #include <thread>
-#include <rclcpp/rclcpp.hpp>
+#include "rclcpp/rclcpp.hpp"
 #include "drone.hpp"
 
 #if defined(AUTO_PILOT_PX4)

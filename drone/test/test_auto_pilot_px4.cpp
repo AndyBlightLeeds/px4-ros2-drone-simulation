@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <thread>
-#include <rclcpp/rclcpp.hpp>
 #include <gtest/gtest.h>
+#include <memory>
+#include <thread>
+#include <vector>
+#include "rclcpp/rclcpp.hpp"
 #include "src/drone.hpp"
 #include "src/auto_pilot_px4.hpp"
 

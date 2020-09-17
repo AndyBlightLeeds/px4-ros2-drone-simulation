@@ -18,6 +18,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <chrono>
+#include <vector>
 
 class AutoPilotInterface : public rclcpp::Node
 {
@@ -28,7 +29,8 @@ public:
     GeographicPointLocation()
     : altitude(0), latitude(0), longitude(0) {}
 
-    bool is_at(const GeographicPointLocation & location) {
+    bool is_at(const GeographicPointLocation & location)
+    {
       bool result = false;
       const int32_t max_altitude_diff_mm = 200;  // 20cm
       // 1 degree of lattitude is 111.2 km. 1 unit is 11.1cm.
@@ -41,8 +43,9 @@ public:
       int32_t latitude_diff = abs(location.latitude - latitude);
       int32_t longitude_diff = abs(location.longitude - longitude);
       if ((altitude_diff < max_altitude_diff_mm) &&
-          (latitude_diff < max_latitude_diff) &&
-          (longitude_diff < max_longitude_diff)) {
+        (latitude_diff < max_latitude_diff) &&
+        (longitude_diff < max_longitude_diff))
+      {
         result = true;
       }
       return result;
@@ -60,7 +63,8 @@ public:
   {
     GeographicPointLocation location;
     int32_t hold_time_ms;
-    Waypoint() : hold_time_ms(0) {}
+    Waypoint()
+    : hold_time_ms(0) {}
   };
 
   AutoPilotInterface()
