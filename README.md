@@ -40,9 +40,6 @@ Gazebo.  There are also countless uses of the following sites:
 * <https://dev.px4.io/v1.10/en/>
 * <https://discuss.px4.io/>
 
-## Status
+## Issues
 
-* Drone::TestAutoModes works.
-* Drone::TestMission does not take off using setpoint_position messages.
-I must be missing something...
-* TODO. #1 Move the tests into a proper test harness.
+Issues are tracked in the GitHUb repo.

@@ -22,7 +22,7 @@
 /**
  * @brief The drone control software.
  * @note This is a first hack so only tests the autopilot code.
- * @todo Extend this a lot!
+ * @todo Define the real interface and then implement it!
  */
 class Drone
 {
