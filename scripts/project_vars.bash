@@ -1,9 +1,9 @@
 # Source this file in other shell scripts.
 
-UBUNTU_RELEASE=bionic
+UBUNTU_RELEASE=focal
 # Needed during builds.
 ROS_PYTHON_VERSION=3
-ROS2_DISTRO=eloquent
+ROS2_DISTRO=foxy
 # PX4 repo branch
 DRONES_BRANCH=px4-drone-demo
 

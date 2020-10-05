@@ -19,18 +19,20 @@ then
     set +e
 fi
 
-docker inspect --type=image ${DOCKER_HUB_USER_NAME}/${SIMULATION_IMAGE}:${SIMULATION_TAG} &> /dev/null
-if [ $? == 1 ]
-then
-    set -e
-    docker build \
-        -t ${DOCKER_HUB_USER_NAME}/${SIMULATION_IMAGE}:${SIMULATION_TAG} \
-        -f ${SIMULATION_IMAGE}.dockerfile \
-        .
-    set +e
-fi
+echo "Build of Ubuntu ${UBUNTU_RELEASE} with ROS2 desktop took $SECONDS seconds."
 
-echo "Build of simulation took $SECONDS seconds."
+# docker inspect --type=image ${DOCKER_HUB_USER_NAME}/${SIMULATION_IMAGE}:${SIMULATION_TAG} &> /dev/null
+# if [ $? == 1 ]
+# then
+#     set -e
+#     docker build \
+#         -t ${DOCKER_HUB_USER_NAME}/${SIMULATION_IMAGE}:${SIMULATION_TAG} \
+#         -f ${SIMULATION_IMAGE}.dockerfile \
+#         .
+#     set +e
+# fi
+
+# echo "Build of simulation took $SECONDS seconds."
 
 # Tidy up
 rm -rf scripts

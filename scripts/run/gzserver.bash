@@ -3,7 +3,7 @@ set -e
 
 . ./params.bash
 
-. /opt/ros/eloquent/setup.bash
+. /opt/ros/${ROS2_DISTRO}/setup.bash
 . /usr/share/gazebo-11/setup.sh
 
 # This is needed for libphysics_msgs.so

@@ -15,7 +15,7 @@ set -e
 #  /usr/local/include
 #  /opt/ros/${ROS_DISTRO}/include
 # The simplest thing to do to meet this requirement is to install
-# the package ros-eloquent-mavlink. See install_px4_repos.bash.
+# the package ros-${ROS2_DISTRO}-mavlink. See install_px4_repos.bash.
 
 # Make sure the sub-repos are up to date.
 cd ${PX4_SITL_GAZEBO_GIT_DIR}

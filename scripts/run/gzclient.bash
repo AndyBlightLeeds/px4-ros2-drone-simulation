@@ -2,7 +2,7 @@
 set -e
 
 . ./params.bash
-. /opt/ros/eloquent/setup.bash
+. /opt/ros/${ROS2_DISTRO}/setup.bash
 . /usr/share/gazebo-11/setup.sh
 # This adds the paths for the mavlink_sitl models etc,
 . ${COLCON_WS_DIR}/install/share/mavlink_sitl_gazebo/setup.sh

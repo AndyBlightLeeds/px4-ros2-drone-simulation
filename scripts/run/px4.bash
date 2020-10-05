@@ -1,7 +1,7 @@
 # From launch_drone_ros2.py.
 # The /tmp/px4 dir contains everthing for that drone.
 . ./params.bash
-. /opt/ros/eloquent/setup.bash
+. /opt/ros/${ROS2_DISTRO}/setup.bash
 
 # Remove any left over files.
 rm -rf /tmp/px4*

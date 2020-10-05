@@ -33,6 +33,23 @@ sudo apt-get install -y --no-install-recommends \
     ros-${ROS2_DISTRO}-launch-testing-ament-cmake \
     ros-${ROS2_DISTRO}-rosidl-generator-dds-idl
 
+# The following are recommended.  gcc might be useful!
+#   gcc build-essential fakeroot libalgorithm-merge-perl fonts-liberation
+#   alsa-ucm-conf alsa-topology-conf at-spi2-core libaacs0 manpages manpages-dev
+#   libpam-cap libcfitsio-doc dmsetup libfile-fcntllock-perl
+#   liblocale-gettext-perl libexif-doc proj-bin libgdk-pixbuf2.0-bin
+#   xdg-user-dirs libgphoto2-l10n gstreamer1.0-plugins-base libgtk-3-bin
+#   libgts-bin javascript-common krb5-locales libtool opencv-data
+#   libcoarrays-openmpi-dev libopenni-sensor-pointclouds0
+#   | libopenni-sensor-primesense0 libpng-tools poppler-data
+#   qttranslations5-l10n qt5-gtk-platformtheme geoclue-2.0 libraw1394-tools
+#   va-driver-all | va-driver vdpau-driver-all | vdpau-driver
+#   mesa-vulkan-drivers | vulkan-icd libwacom-bin file xauth netbase python3-gi
+#   libpaper-utils python3-pil python3-click python3-bs4 python3-html5lib
+#   python3-tk notification-daemon pyflakes3 python3-png networkd-dispatcher
+#   libnss-systemd xterm | x-terminal-emulator
+
+
 # bootstrap rosdep
 sudo rm -f /etc/ros/rosdep/sources.list.d/20-default.list
 sudo rosdep init

@@ -1,8 +1,11 @@
 # Variables for other scripts.
 
 DOCKER_HUB_USER_NAME="andyblightleeds"
-ROS2_DESKTOP_IMAGE="ros2-eloquent-desktop"
-ROS2_DESKTOP_TAG="ubuntu1804"
-SIMULATION_IMAGE="px4-ros2-drone-simulation"
-SIMULATION_TAG="v2"
-SIMULATION_CONTAINER_NAME="gazebo_px4_sim"
+ROS2_DESKTOP_IMAGE="ros2-foxy-desktop"
+ROS2_DESKTOP_TAG="ubuntu2004"
+# SIMULATION_IMAGE="px4-ros2-drone-simulation"
+# SIMULATION_TAG="v1"
+# SIMULATION_CONTAINER_NAME="gazebo_px4_sim"
+SIMULATION_IMAGE=${ROS2_DESKTOP_IMAGE}
+SIMULATION_TAG=${ROS2_DESKTOP_TAG}
+SIMULATION_CONTAINER_NAME="ros2_foxy_focal"
